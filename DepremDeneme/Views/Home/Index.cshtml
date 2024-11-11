@@ -1,0 +1,47 @@
+﻿@model List<DepremDeneme.Models.Deprem>
+
+<h2>Son 24 Saatteki Depremler</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tarih</th>
+            <th>Yer</th>
+            <th>Büyüklük</th>
+            <th>Koordinatlar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var deprem in Model)
+        {
+            <tr>
+                <td>@deprem.Tarih</td>
+                <td>@deprem.Yer</td>
+                <td>@deprem.Buyukluk</td>
+                <td>@deprem.Enlem, @deprem.Boylam</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="map" style="height: 500px;"></div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+<script>
+    var map = L.map('map').setView([39.9334, 32.8597], 5);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18
+    }).addTo(map);
+
+    @foreach (var deprem in Model)
+    {
+        <text>
+                L.marker([@deprem.Enlem, @deprem.Boylam])
+                .addTo(map)
+                .bindPopup("<b>@deprem.Yer</b><br>Büyüklük: @deprem.Buyukluk");
+        </text>
+    }
+</script>
